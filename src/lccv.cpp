@@ -7,7 +7,7 @@
 using namespace lccv;
 using namespace std::chrono;
 
-PiCamera::PiCamera() {
+PiCamera::PiCamera(int sleepMs_) : sleepMs(sleepMs_) {
     app = std::make_unique<LibcameraApp>(std::make_unique<Options>());
     options = static_cast<Options *>(app->GetOptions());
     options->camera = 0;
@@ -120,5 +120,9 @@ void PiCamera::videoLoop() {
             frameready.store(true);
         }
         frameCond.notify_one();
+
+        if (sleepMs > 0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleepMs));
+        }
     }
 }

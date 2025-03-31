@@ -11,14 +11,14 @@
 #include <opencv2/opencv.hpp>
 #include <thread>
 
-#include <libcamera/libcamera.h>
-#include "core/libcamera_app.hpp"
+#include "libcamera_app_options.hpp"
+#include "libcamera_app.hpp"
 
 namespace lccv {
 
 class PiCamera {
 public:
-    PiCamera();
+    PiCamera(int sleepMs = 1);
     ~PiCamera();
 
     Options *options;
@@ -41,6 +41,7 @@ private:
     std::thread videoThread;
     std::atomic<bool> running{false}, frameready{false};
 
+    int sleepMs = 0;
     unsigned int still_flags = 0;
     unsigned int vw = 0, vh = 0, vstr = 0;
     uint8_t *framebuffer = nullptr;
